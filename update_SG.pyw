@@ -5,10 +5,10 @@
 import boto3
 import socket
 
-HOSTNAMES = [''] # insert hostnames here
+HOSTNAMES = [''] # insert hostnames here, assumming there are multiple
 SECURITY_GROUP_ID = '' # insert the AWS security group ID
 PORT = '' # insert port number here
-PROTOCOL = 'tcp'
+PROTOCOL = 'tcp' 
 REGION = '' # insert aws Region here
 
 def resolve_ips(hostnames):

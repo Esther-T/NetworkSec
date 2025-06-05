@@ -1,0 +1,15 @@
+Based on a TryHackMe Challenge (This is for Educational Purpose only)
+
+Objective: Given that an attacker has discovered two usernames ('jane' and 'peter') through social engineering and has access to the target's IP address, what steps might the attacker take to retrieve account files from the target's FTP server?
+
+Methods:
+Step 1: Attacker runs a command to scan the open ports on the target IP address. This can be achieved via the regular sudo nmap command 
+Step 2: Based on the results, they can see if there are any open FTP ports
+Step 3: Attacker runs a sudo nmap command targeting the FTP server. They enter the username and realize that a password is required
+Step 4: Attacker uses hydra to crack the password using the username and a list of common passwords from a previous breach
+Step 5: if a password match is found, attacker uses the username and password to connect to the FTP server via the IP address and downloads 	the files
+
+Conclusion/Patch to mitigate future incidents: 
+-Avoid using easily guessable and/or same passwords
+-Tech admins should block port 21 (or only allow from trusted source IPs) and use a good Intrusion Detection System to block scans like nmap.
+

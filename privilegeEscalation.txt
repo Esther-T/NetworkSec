@@ -1,0 +1,7 @@
+Privilege Escalation via SUID info (A TryHackMe Challenge: for Educational Purposes only)
+
+1. Run find / -type f -perm -04000 -ls 2>/dev/null to search for files that have the SUID bit set
+2. THM victim's machine has a SUID for the base64 tool, so we can use it to read the etc/passwd or etc/shadow files
+3. Since it's encoded in base64, we can use a free online base 64 decoder to crack it
+4. Once we have both passwd and shadow files, we can use Jack the Ripper tool to unshadow and merge them
+5. Run Jack the Ripper with a database of common passwords to crack the password for the local users on the victim's machine

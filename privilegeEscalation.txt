@@ -5,3 +5,8 @@ Privilege Escalation via SUID info (A TryHackMe Challenge: for Educational Purpo
 3. Since it's encoded in base64, we can use a free online base 64 decoder to crack it
 4. Once we have both passwd and shadow files, we can use Jack the Ripper tool to unshadow and merge them
 5. Run Jack the Ripper with a database of common passwords to crack the password for the local users on the victim's machine
+
+via Capabilities 
+
+1. getcap -r / 2>dev/null (will produce a lot of errors so let's redirect it to dev/null)
+2. ls -l to list permissions of the capabilities

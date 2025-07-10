@@ -21,7 +21,7 @@ via Crontabs
 4. Start the listener on the attacker's IP nc -nlvp <port_number> 
 5. When the cronjob is executable, it will spin up a reverse shell with the account that runs the cronjob
 
-via Path
+via $PATH
 
 1. We need to run a script that will gain access to root shell but it requires a command that is not found on the OS 
 2. echo $PATH to view all paths 

